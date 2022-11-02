@@ -2,8 +2,8 @@
 color a
 mode con: cols=62 lines=10
 title DiskTool - %time%
-set VaultPath=\Documents\
-set encryptionKey=133521
+set VaultPath=\FOLDER TO ENCRYPT\ rem CHANGE THIS!
+set encryptionKey=133521 rem DO NOT CHANGE THIS!
 
 :Menu
 cls
@@ -27,7 +27,7 @@ cls
 echo Enter your decryption key to decrypt this disk.
 echo.
 set /p "pass=root@vault:~# "
-if NOT %pass%== YOURPASSWORD goto :Fail
+if NOT %pass%== YOURPASSWORD goto :Fail rem CHANGE THIS!
 exit /b
 
 :InitForEncrypt
