@@ -21,3 +21,4 @@ DiskTool has 4 commands: encrypt, decrypt, help and newkey.
 
 # What it looks like
 ![Picture1](https://i.ibb.co/s6nxYK0/q6zj9gi2.png)
+(I hide the aes.exe file)
