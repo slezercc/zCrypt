@@ -17,8 +17,8 @@ DiskTool has 4 commands: encrypt, decrypt, help and newkey.
 "exit" will... exit.  
 
 # My setup on my USB Drive
-![Picture1](https://i.ibb.co/zVRz64v/73lzau0n.png)
+![Picture1](https://i.ibb.co/zVRz64v/73lzau0n.png)  
+(I hide the aes.exe file)
 
 # What it looks like
 ![Picture1](https://i.ibb.co/s6nxYK0/q6zj9gi2.png)
-(I hide the aes.exe file)
