@@ -12,8 +12,8 @@ if NOT %pass%== YOURPASSWORD goto :Fail rem change YOURPASSWORD to your preferre
 DiskTool has 4 commands: encrypt, decrypt, help and newkey.  
 "encrypt" will encrypt the selected folder on your drive.  
 "decrypt" will decrypt the selected folde ron your drive if the passwrd is enetered correctly.  
-"newkey" will create a text file in %folder%/Keys/ with your specified content so that it can be encrypted and stored safely. (Made to store information such as mnemonic keys safely.). 
-"help" will display all commands ands their usage.  
+"newkey" will create a text file in %vaultpath%/Keys/ with your specified content so that it can be encrypted and stored safely. (Made to store information such as mnemonic keys safely.)  
+"help" will display all commands and their usage.  
 "exit" will... exit.  
 
 # My setup on my USB Drive
