@@ -7,6 +7,11 @@ set encryptionKey=133521 rem DO NOT CHANGE THIS!
 
 :Menu
 cls
+echo    ___  _      __  ______          __
+echo   / _ \(_)__  / /_/_  __/__  ___  / /
+echo  / // / /(_-</  '_// / / _ \/ _ \/ / 
+echo /____/_/___/_/\_\ /_/  \___/\___/_ /  v1.1
+echo.
 echo Welcome to DiskTool, type "help" to view all commands.
 echo.
 set/p "action=root@vault:~# "
