@@ -13,7 +13,7 @@ if NOT %pass%== YOURPASSWORD goto :Fail rem change YOURPASSWORD to your preferre
 ```
 
 # Usage
-DiskTool has 4 commands: encrypt, decrypt, help and newkey.  
+DiskTool uses the following commands to work:  
 "encrypt" will encrypt the selected folder on your drive.  
 "decrypt" will decrypt the selected folde ron your drive if the passwrd is enetered correctly.  
 "newkey" will create a text file in %vaultpath%/Keys/ with your specified content so that it can be encrypted and stored safely. (Made to store information such as mnemonic keys safely.)  
@@ -21,9 +21,6 @@ DiskTool has 4 commands: encrypt, decrypt, help and newkey.
 "clear" will clear the DiskTool console.
 "exit" will... exit.  
 
-# My setup on my USB Drive
+# My setup on my disk
 ![Picture1](https://i.ibb.co/zVRz64v/73lzau0n.png)  
-(I hide the aes.exe file)
-
-# What it looks like
-![Picture1](https://i.ibb.co/s6nxYK0/q6zj9gi2.png)
+(I hide aes.exe, 7z.exe & 7z.dll)
