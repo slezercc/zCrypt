@@ -1,146 +1,100 @@
 @echo off
 color a
-mode con: cols=62 lines=10
 title DiskTool - %time%
-set VaultPath=\FOLDER TO ENCRYPT\ rem CHANGE THIS!
-set encryptionKey=133521 rem DO NOT CHANGE THIS!
+set VaultPath=\FOLDER TO ENCRYPT\ rem CHANGE THIS
+set VaultName=Documents rem change this to set the name of the layer 2 encryption archive
+set encryptionKey=133521 rem DO NOT CHANGE THIS
 
-:Menu
+:login
 cls
-echo    ___  _      __  ______          __
-echo   / _ \(_)__  / /_/_  __/__  ___  / /
-echo  / // / /(_-</  '_// / / _ \/ _ \/ / 
-echo /____/_/___/_/\_\ /_/  \___/\___/_ /  v1.1
+echo     ___  _     __  ______          __
+echo    / _ \(_)__ / /_/_  __/__  ___  / /
+echo   / // / (_- /  '_// / / _ \/ _ \/ / 
+echo  /____/_/___/_/\_\/_/  \___/\___/_/  v1.2
 echo.
 echo Welcome to DiskTool, type "help" to view all commands.
 echo.
-set/p "action=root@vault:~# "
+:actionask
+set/p "action=> "
 set result=true
 if %action%==encrypt call :InitForEncrypt
 if %action%==decrypt call :InitForDecrypt
 if %action%==newkey call :NewKey
 if %action%==help call :Help
+if %action%==clear goto :login
+if %action%==cls goto :login
 if %action%==exit exit
 
 echo Command "%action%" not recognised, type "help" to view all commands.
-echo.
-pause
-goto Menu
+goto :actionask
 
 :GetPass
-cls
 echo Enter your decryption key to decrypt this disk.
-echo.
-set /p "pass=root@vault:~# "
-if NOT %pass%== YOURPASSWORD goto :Fail rem CHANGE THIS!
+set /p "pass=> "
+if NOT %pass%==YOURPASSWORD goto :Fail
 exit /b
 
 :InitForEncrypt
-cls
-echo Encrypting Disk with AES-256 algorithm, this may take a while.
+echo Use layer 1 encryption (1) or 2 layer encryption (2)?
+set/p "layer=> "
+if %layer%==1 goto :1layer
+if %layer%==2 goto :1layer
+echo Invalid choice.
+goto :InitForEncrypt
+
+:1layer
+echo Encrypting disk, this may take a while.
 set ForLoopFile=%VaultPath%
-FOR /f %%G IN ('dir /s /b /a-d %ForLoopFile%') DO (call :Encrypt %%G)
-goto :Menu
+FOR /f "delims=" %%G IN ('dir /s /b /a-d %ForLoopFile%') DO if /i "%%~xG" neq ".aes" (call :Encrypt "%%G")
+if %layer%==2 goto :2layer
+goto :actionask
+
+:2layer
+7z a %VaultName%.7z -pjX2wp%85XBOgVO#hatNm -mhe \Documents\ >NUL
+rmdir %VaultPath% /q /s
+goto :actionask
 
 :InitForDecrypt
 call :GetPass
-cls
-echo Decrypting Disk with AES-256 algorithm, this may take a while.
+echo Decrypting disk, this may take a while.
+if exist %VaultName%.7z 7z x %VaultName%.7z -pjX2wp%85XBOgVO#hatNm >NUL && del /q %VaultName%.7z >NUL
+:1layerd
 set ForLoopFile=%VaultPath%
-FOR /f %%G IN ('dir /s /b /a-d %ForLoopFile%') DO (call :Decrypt %%G)
-goto :Menu
+FOR /f "delims=" %%G IN ('dir /s /b /a-d %ForLoopFile%') DO (call :Decrypt "%%G")
+goto :actionask
 
 :Encrypt
-set targetFile=%1
-set outputFile=%targetFile:txt=txt.aes%
-aes -e %encryptionKey% %targetFile% %outputFile% >NUL
-set outputFile=%targetFile:exe=exe.aes%
-aes -e %encryptionKey% %targetFile% %outputFile% >NUL
-set outputFile=%targetFile:zip=zip.aes%
-aes -e %encryptionKey% %targetFile% %outputFile% >NUL
-set outputFile=%targetFile:rar=rar.aes%
-aes -e %encryptionKey% %targetFile% %outputFile% >NUL
-set outputFile=%targetFile:png=png.aes%
-aes -e %encryptionKey% %targetFile% %outputFile% >NUL
-set outputFile=%targetFile:jpg=jpg.aes%
-aes -e %encryptionKey% %targetFile% %outputFile% >NUL
-set outputFile=%targetFile:ico=ico.aes%
-aes -e %encryptionKey% %targetFile% %outputFile% >NUL
-set outputFile=%targetFile:gif=gif.aes%
-aes -e %encryptionKey% %targetFile% %outputFile% >NUL
-set outputFile=%targetFile:mp4=mp4.aes%
-aes -e %encryptionKey% %targetFile% %outputFile% >NUL
-set outputFile=%targetFile:m4v=m4v.aes%
-aes -e %encryptionKey% %targetFile% %outputFile% >NUL
-set outputFile=%targetFile:.py=.py.aes%
-aes -e %encryptionKey% %targetFile% %outputFile% >NUL
-set outputFile=%targetFile:asc=asc.aes%
-aes -e %encryptionKey% %targetFile% %outputFile% >NUL
-set outputFile=%targetFile:vbs=vbs.aes%
-aes -e %encryptionKey% %targetFile% %outputFile% >NUL
-set outputFile=%targetFile:bat=bat.aes%
-aes -e %encryptionKey% %targetFile% %outputFile% >NUL
-set outputFile=%targetFile:ovpn=ovpn.aes%
-aes -e %encryptionKey% %targetFile% %outputFile% >NUL
-del /f %targetFile%
+aes -e %encryptionKey% "%~1" "%~1.aes" >NUL
+del /f "%~1"
 exit /b
 
 :Decrypt
-set targetFile=%1
-set outputFile=%targetFile:txt.aes=txt%
-aes -d %encryptionKey% %targetFile% %outputFile% >NUL
-set outputFile=%targetFile:exe.aes=exe%
-aes -d %encryptionKey% %targetFile% %outputFile% >NUL
-set outputFile=%targetFile:zip.aes=zip%
-aes -d %encryptionKey% %targetFile% %outputFile% >NUL
-set outputFile=%targetFile:rar.aes=rar%
-aes -d %encryptionKey% %targetFile% %outputFile% >NUL
-set outputFile=%targetFile:png.aes=png%
-aes -d %encryptionKey% %targetFile% %outputFile% >NUL
-set outputFile=%targetFile:jpg.aes=jpg%
-aes -d %encryptionKey% %targetFile% %outputFile% >NUL
-set outputFile=%targetFile:ico.aes=ico%
-aes -d %encryptionKey% %targetFile% %outputFile% >NUL
-set outputFile=%targetFile:gif.aes=gif%
-aes -d %encryptionKey% %targetFile% %outputFile% >NUL
-set outputFile=%targetFile:mp4.aes=mp4%
-aes -d %encryptionKey% %targetFile% %outputFile% >NUL
-set outputFile=%targetFile:m4v.aes=m4v%
-aes -d %encryptionKey% %targetFile% %outputFile% >NUL
-set outputFile=%targetFile:.py.aes=.py%
-aes -d %encryptionKey% %targetFile% %outputFile% >NUL
-set outputFile=%targetFile:asc.aes=asc%
-aes -d %encryptionKey% %targetFile% %outputFile% >NUL
-set outputFile=%targetFile:vbs.aes=vbs%
-aes -d %encryptionKey% %targetFile% %outputFile% >NUL
-set outputFile=%targetFile:bat.aes=bat%
-aes -d %encryptionKey% %targetFile% %outputFile% >NUL
-set outputFile=%targetFile:ovpn.aes=ovpn%
-aes -d %encryptionKey% %targetFile% %outputFile% >NUL
-del /f %targetFile%
+aes -d %encryptionKey% "%~1" "%~dpn1" >NUL
+del /f "%~1"
 exit /b
 
 :Fail
 echo Incorrect password, please try again.
-pause
 goto GetPass
 
+:newkeyfail
+echo Can't create new keys when files are encrypted.
+goto :actionask
+
 :NewKey
-cls
+if exist %VaultName%.7z goto :newkeyfail
 echo Enter Key Name:
-set /p KeyName=
-cls
+set/p "KeyName=> "
 echo Enter Key Content:
-set /p KeyContent=
-echo %KeyContent% > "%VaultPath%Keys\%KeyName%.txt"
-ping 127.0.0.1 -n 2 > nul
-goto :Menu
+set/p "KeyContent=> "
+echo %KeyContent% > "%VaultPath%Keys\%KeyName%.txt" >NUL
+echo Created %KeyName%.txt
+goto :actionask
 
 :Help
-echo encrypt - Encrypts all files stored on this USB device.
+echo encrypt - Encrypts files stored in %VaultPath%
 echo decrypt - Decrypts all files when password is correct.
 echo newkey - Create a new text key in %VaultPath%Keys\.
 echo help - displays this command.
-echo.
-pause
-goto :Menu
+echo clear - clears the console.
+goto :actionask
