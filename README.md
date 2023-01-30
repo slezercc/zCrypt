@@ -26,7 +26,7 @@ done - Deletes your decrypted files.
 clear, cls - Clears the console.  
 
 # Suggestions
-I heavily suggest you use 2 layer encryption for storing sensitive files, if you need to decrypt a specific folder without decrypting all of your documents, use the decrypt command as usual, enter your password and it will ask if you want to decrypt a specific folder, enter the path of the folder, example: if the folder is a folder named Keys inside your vault, simply enter Keys, if it is a folder, inside the Keys directory, enter it as follows: Keys\Crypto  
+I strongly recommend you obfuscate DiskTool.bat after installation using the following tool: [https://batch-obfuscator.tk/](https://batch-obfuscator.tk/). You should also download bat to exe converter, bind aes.exe, 7z.exe and 7z.dll to DiskTool.bat, and convert. I also suggest you use 2 layer encryption for storing sensitive files, if you need to decrypt a specific folder without decrypting all of your documents, use the decrypt command as usual, enter your password and it will ask if you want to decrypt a specific folder, enter the path of the folder, example: if the folder is a folder named Keys inside your vault, simply enter Keys, if it is a folder, inside the Keys directory, enter it as follows: Keys\Crypto  
 
 # Functioning
 1 layer encryption encrypts every file in the filevault directory using AES; 2 layer encryption does the same but then adds every file to a .7z archive, compresses it, and encrypts it using a different encryption key for a second layer of protection and to hide the filenames.  
