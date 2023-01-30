@@ -1,5 +1,5 @@
 @echo off
-title DiskTool v1.4
+title DiskTool v1.3
 set VaultPath=\Documents\
 set VaultName=Documents
 set encryptionKey=133521
