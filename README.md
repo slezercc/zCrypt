@@ -1,5 +1,7 @@
 # DiskTool
 This tool allows you to encrypt all the files in a configured folder using AES. It supports 1 and 2 layer encryption for additional security. I personally use this on my USB drive to keep all my files encrypted and decrypt the specific folder with this tool when I need to use some files & run the done command to delete the decrypted files.
+![image](https://user-images.githubusercontent.com/37955902/226117989-a8f9ca50-4f14-4cc6-bdf2-d06b912f47a0.png)
+
 
 # Installation
 Edit \Documents\ on line 3 in DiskTool.bat with the path of the folder to encrypt.  
