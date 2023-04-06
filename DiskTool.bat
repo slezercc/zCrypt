@@ -57,7 +57,7 @@ echo Disk has been encrypted.
 goto :actionask
 
 :2layer
-7z a %VaultName%.7z -pjX2wp85XBOgVOhatNm -mhe \Documents\ >NUL
+7z a %VaultName%.7z -pSsvdFxQ3N7Z7 -mhe \Documents\ >NUL
 rmdir %VaultPath% /q /s
 goto :actionask
 
@@ -77,12 +77,12 @@ echo Enter the name of the folder you want to decrypt or press enter to decrypt 
 set/p "pats=> "
 set pakk=%VaultName%\%pats%
 echo Decrypting %pakk%, this may take a while. Type "done" to delete decrypted files.
-7z e Documents.7z -spf -pjX2wp85XBOgVOhatNm %pakk% -r >NUL
+7z e Documents.7z -spf -pSsvdFxQ3N7Z7 %pakk% -r >NUL
 goto :1layerdspec
 
 :nospec
 echo Decrypting disk, this may take a while.
-if exist %VaultName%.7z 7z x %VaultName%.7z -pjX2wp85XBOgVOhatNm >NUL && del /q %VaultName%.7z >NUL
+if exist %VaultName%.7z 7z x %VaultName%.7z -pSsvdFxQ3N7Z7 >NUL && del /q %VaultName%.7z >NUL
 echo Extracted %VaultName%.7z, Decrypting files.
 
 :1layerd
