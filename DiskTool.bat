@@ -1,19 +1,24 @@
 @echo off
 title DiskTool v1.4
-set VaultPath=\Documents\
+set VaultPath=Documents\
 set VaultName=Documents
-set encryptionKey=245930
-set PassCheck=Invalid
+set aesKey=7g3f8j2w9
+set Authenticated=false
+set new=true
+if exist %VaultPath% set new=false
+if exist %VaultName%.7z set new=false
+if %new%==true mkdir %VaultName%
 
 :login
 cls
 echo     ___  _     __  ______          __
 echo    / _ \(_)__ / /_/_  __/__  ___  / /
-echo   / // / (_- /  '_// / / _ \/ _ \/ / 
+echo   / // / (_- /   _// / / _ \/ _ \/ / 
 echo  /____/_/___/_/\_\/_/  \___/\___/_/  v1.4
 echo.
-if %PassCheck%==Valid goto :sectorask
 echo Welcome to DiskTool, type "help" to view all commands.
+if %Authenticated%==true echo. && goto :sectorAsk
+if %new%==true echo %VaultPath% folder created, files stored inside this folder can now be encrypted.
 echo.
 :actionask
 set/p "action=> "
@@ -24,17 +29,19 @@ if %action%==help call :Help
 if %action%==clear goto :login
 if %action%==cls goto :login
 if %action%==done goto :done
+if %action%==exit exit
 echo Command "%action%" not recognised, type "help" to view all commands.
 goto :actionask
 
 :done
-echo This will delete %VaultPath%, are you sure? (y/n)
-set/p "layer=> "
-if %layer%==y rmdir %VaultPath% /q /s && exit
-if %layer%==n goto :actionask
+echo This will delete \%VaultPath%, are you sure? (y/n)
+set/p "delete=> "
+if %delete%==y rmdir %VaultPath% /q /s && goto :actionask
+if %delete%==n goto :actionask
 goto :done
 
 :InitForEncrypt
+if exist %VaultName%.7z echo Files are already encrypted. && goto :actionask
 echo Use layer 1 encryption (1) or 2 layer encryption (2)?
 set/p "layer=> "
 if %layer%==1 goto :1layer
@@ -42,42 +49,47 @@ if %layer%==2 goto :1layer
 echo Invalid choice.
 goto :InitForEncrypt
 
+:InitForConvert
+
+
 :1layer
-echo Encrypting %VaultPath%, this may take a while.
-set ForLoopFile=%VaultPath%
-FOR /f "delims=" %%G IN ('dir /s /b /a-d %ForLoopFile%') DO if /i "%%~xG" neq ".aes" (call :Encrypt "%%G")
+echo Encrypting \%VaultPath%, this may take a while.
+FOR /f "delims=" %%G IN ('dir /s /b /a-d %VaultPath%') DO if /i "%%~xG" neq ".aes" (call :Encrypt "%%G")
 if %layer%==2 goto :2layer
-echo %VaultPath% has been encrypted.
 goto :actionask
 
 :2layer
-echo Adding %VaultPath% to %VaultName%.7z, this may take a while.
-7z a %VaultName%.7z -pSsvdFxQ3N7Z7 -mhe \Documents\ >NUL
+echo Adding \%VaultPath% to %VaultName%.7z, this may take a while.
+7z a %VaultName%.7z -pSsvdFxQ3N7Z7 -mhe %VaultPath% >NUL
 rmdir %VaultPath% /q /s
 goto :actionask
 
 :InitForDecrypt
-echo Enter your decryption key to decrypt this disk.
+if exist %VaultName% set name=\%VaultName%\
+if exist %VaultName%.7z set name=%VaultName%.7z
+if %Authenticated%==true goto :sectorAsk
+if %Authenticated%==false echo Enter your decryption password to decrypt %name%.
 :GetPass
 set /p "pass=> "
-if NOT %pass%==YOURPASSWORD echo Decryption key incorrect, please try again. && goto :GetPass
-if %pass%==YOURPASSWORD set PassCheck=Valid && goto :login
+if NOT %pass%==YOURPASSWORD echo Decryption password incorrect, please try again. && goto :GetPass
+if %pass%==YOURPASSWORD set Authenticated=true && goto :login
 
-:sectorask
+:sectorAsk
 echo Decrypt specific folder? (y/n)
 set/p "sector=> "
 if %sector%==y goto :spec
 if %sector%==n goto :nospec
 echo Invalid choice.
-goto :sectorask
+goto :sectorAsk
 
 :spec
-echo Enter the name of the folder you want to decrypt or press enter to decrypt all files.
-set/p "pats=> "
-set pakk=%VaultName%\%pats%
-echo Extracting %pakk%, this may take a while.
-7z e Documents.7z -spf -pSsvdFxQ3N7Z7 %pakk% -r >NUL
-echo Decrypting %pakk%, this may take a while.
+echo Enter the name of the folder you want to decrypt.
+set/p "specFolder=> "
+set specPath=%VaultName%\%specFolder%
+if NOT exist %VaultName%.7z echo Decrypting %specPath%, this may take a while. && goto :1layerdspec
+echo Extracting %specPath%, this may take a while.
+7z e %VaultName%.7z -spf -pSsvdFxQ3N7Z7 %specPath% -r >NUL
+echo Decrypting %specPath%, this may take a while.
 goto :1layerdspec
 
 :nospec
@@ -86,22 +98,20 @@ if exist %VaultName%.7z 7z x %VaultName%.7z -pSsvdFxQ3N7Z7 >NUL && del /q %Vault
 echo Decrypting %VaultPath%, this may take a while.
 
 :1layerd
-set ForLoopFile=%VaultPath%
-FOR /f "delims=" %%G IN ('dir /s /b /a-d %ForLoopFile%') DO (call :Decrypt "%%G")
+FOR /f "delims=" %%G IN ('dir /s /b /a-d %VaultPath%') DO (call :Decrypt "%%G")
 goto :actionask
 
 :1layerdspec
-set ForLoopFile=%pakk%
-FOR /f "delims=" %%G IN ('dir /s /b /a-d %ForLoopFile%') DO (call :Decrypt "%%G")
+FOR /f "delims=" %%G IN ('dir /s /b /a-d %specPath%') DO (call :Decrypt "%%G")
 goto :actionask
 
 :Encrypt
-aes -e %encryptionKey% "%~1" "%~1.aes" >NUL
+aes -e %aesKey% "%~1" "%~1.aes" >NUL
 del /f "%~1"
 exit /b
 
 :Decrypt
-aes -d %encryptionKey% "%~1" "%~dpn1" >NUL
+aes -d %aesKey% "%~1" "%~dpn1" >NUL
 del /f "%~1"
 exit /b
 
@@ -121,10 +131,11 @@ echo Created %KeyName%.txt
 goto :actionask
 
 :Help
-echo encrypt - Encrypts files stored in %VaultPath%
-echo decrypt - Decrypts all files stored in %VaultPath%
-echo newkey - Create a new text key in %VaultPath%Keys\
+echo encrypt - encrypts files stored in %VaultPath%.
+echo decrypt - decrypts all files stored in %VaultPath%.
+echo newkey - create a new text key in %VaultPath%Keys\.
 echo help - displays this text.
 echo clear, cls - clears the console.
-echo done - delete decrypted files and exit.
+echo done - delete decrypted files.
+echo exit - closes the DiskTool console.
 goto :actionask
