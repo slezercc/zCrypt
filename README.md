@@ -4,29 +4,24 @@ This tool allows you to encrypt all the files in a configured folder using AES e
 ![image](https://user-images.githubusercontent.com/37955902/226117989-a8f9ca50-4f14-4cc6-bdf2-d06b912f47a0.png)
 
 
-# Installation
-1, In DiskTool.bat, edit YOURPASSWORD on line 74 and 75 to your preferred password to use when decrypting your files.  
+# Setup
+1, In DiskTool.bat, edit line 3, 4 and 6  
 ```batch
-if NOT %pass%==YOURPASSWORD echo Decryption key incorrect, please try again. && goto :GetPass
-if %pass%==YOURPASSWORD set PassCheck=Valid && goto :login
+set VaultName=Documents
+set password=YOURPASSWORD
+set aesKey=7g3f8j2w9
 ```
-Optional: You can edit line 3, 4 and 5
-```batch
-set VaultPath=Documents\ # folder that will contain your files
-set VaultName=Documents # 7z archive name
-set aesKey=2yh34gf8w1u3bc # aes encryption key
-```
+VaultName is the name of the folder where your files will be stored/encrypted.
+password is the password you will use when decrypting your files.
+aesKey is the encryption string that will be used to encrypt your files (Note: this needs to be an alphanumeric string containing no special characters.)
 
-2, Obfuscate DiskTool.bat using [batch-obfuscator.tk](https://batch-obfuscator.tk/) and make sure your new obfuscated bat file works.  
-![image](https://user-images.githubusercontent.com/37955902/230526254-4bd102a4-f1e7-4a65-b51c-dac0fa57f78b.png)  
-
-3, Convert DiskTool.exe to an exe file using Bat to Exe Converter. You can download it from [MajorGeeks](https://www.majorgeeks.com/files/details/bat_to_exe_converter.html), make sure you use these exact settings (I only had to change delete on exit to yes):  
+2, Convert DiskTool.exe to an exe file using Bat to Exe Converter. You can download it from [MajorGeeks](https://www.majorgeeks.com/files/details/bat_to_exe_converter.html), make sure you use these exact settings (I only had to change delete on exit to yes):  
 ![image](https://user-images.githubusercontent.com/37955902/230525268-35e0db4b-ee72-460d-a086-348743b0a132.png)  
   
-4, In the embed tab, drag and drop aes.exe, 7z.exe and 7z.dll.
+3, In the embed tab, drag and drop aes.exe, 7z.exe and 7z.dll.  
 
-Optional: You can add this icon in the options:  
-![image](https://slezer.cc/assets/img/disktool/icon.ico)
+4, (Optional) Add this icon in the options:  
+![image](https://raw.githubusercontent.com/slezercc/DiskTool/main/icon.ico)
 
 5, Convert DiskTool to an exe file using the convert button and you're good to go!
 
