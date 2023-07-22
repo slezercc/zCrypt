@@ -14,7 +14,7 @@ VaultName is the name of the folder where your files will be stored/encrypted.
 password is the password you will use when decrypting your files.
 aesKey is the encryption string that will be used to encrypt your files (Note: this needs to be an alphanumeric string containing no special characters.)
 
-2, Convert zCrypt.exe to an exe file using Bat to Exe Converter. You can download it from [MajorGeeks](https://www.majorgeeks.com/files/details/bat_to_exe_converter.html), make sure you use these exact settings (I only had to change delete on exit to yes):  
+2, Convert zCrypt.bat to an exe file using Bat to Exe Converter. You can download it from [MajorGeeks](https://www.majorgeeks.com/files/details/bat_to_exe_converter.html), make sure you use these exact settings (I only had to change delete on exit to yes):  
 ![image](https://user-images.githubusercontent.com/37955902/230525268-35e0db4b-ee72-460d-a086-348743b0a132.png)  
   
 3, In the embed tab, drag and drop aes.exe, 7z.exe and 7z.dll.  
