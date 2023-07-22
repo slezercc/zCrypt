@@ -1,5 +1,5 @@
 @echo off
-title DiskTool v1.5
+title zCrypt v1.5
 set VaultName=Documents
 set password=YOURPASSWORD
 set VaultPath=%VaultName%\
@@ -12,12 +12,14 @@ if %new%==true mkdir %VaultName%
 
 :login
 cls
-echo     ___  _     __  ______          __
-echo    / _ \(_)__ / /_/_  __/__  ___  / /
-echo   / // / (_- /   _// / / _ \/ _ \/ / 
-echo  /____/_/___/_/\_\/_/  \___/\___/_/  v1.5
+echo         ______                 __ 
+echo  ____  / ____/______  ______  / /_
+echo /_  / / /   / ___/ / / / __ \/ __/
+echo  / /_/ /___/ /  / /_/ / /_/ / /_  
+echo /___/\____/_/   \__, / .___/\__/  
+echo                /____/_/       v1.5
 echo.
-echo Welcome to DiskTool, type "help" to view all commands.
+echo Welcome to zCrypt, type "help" to view all commands.
 if %Authenticated%==true echo. && goto :sectorAsk
 if %new%==true echo \%VaultPath% folder created, files stored inside this folder can now be encrypted.
 echo.
@@ -136,5 +138,5 @@ echo newkey - create a new text file in \%VaultPath%Keys\.
 echo help - displays this text.
 echo clear, cls - clears the console.
 echo done - delete decrypted files.
-echo exit - closes DiskTool.
+echo exit - closes zCrypt.
 goto :actionask
