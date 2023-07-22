@@ -17,7 +17,7 @@ echo  ____  / ____/______  ______  / /_
 echo /_  / / /   / ___/ / / / __ \/ __/
 echo  / /_/ /___/ /  / /_/ / /_/ / /_  
 echo /___/\____/_/   \__, / .___/\__/  
-echo                /____/_/       v1.5
+echo                /____/_/           v1.5
 echo.
 echo Welcome to zCrypt, type "help" to view all commands.
 if %Authenticated%==true echo. && goto :sectorAsk
